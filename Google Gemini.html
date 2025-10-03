@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAE Project: OCR for the Beatrice Moxon Diary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Vintage Scholar -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey. It starts with a high-level introduction, then delves into the 'how' with an interactive process flow. The centerpiece is the 'Results' dashboard, allowing users to directly compare performance metrics, which is the core finding. It then provides static but essential context on transcription rules, and concludes with future plans. This thematic, top-down structure is more engaging and intuitive for understanding the project's value than simply following the report's linear document structure. -->
+    <!-- Visualization & Content Choices: The report's key quantitative data is the comparison of error rates. Goal: Compare. Method: A grouped bar chart (Chart.js) is the clearest way to show the performance difference between the baseline (W/O FT) and fine-tuned (FT) models. Interaction: Buttons to switch between documents dynamically update the chart, allowing for focused analysis without page reloads. This makes the data exploration user-driven and immediate. The implementation process is shown as an interactive, clickable diagram using HTML/CSS, which is more engaging than a simple list. Goal: Organize. Method: HTML/CSS cards with JS click-to-reveal. This structure supports the overall narrative flow. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F5F5F4; /* stone-100 */
+        }
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .step-card.active {
+            border-color: #B45309; /* amber-700 */
+            background-color: #FFFBEB; /* amber-50 */
+        }
+        .nav-btn.active {
+            background-color: #B45309; /* amber-700 */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-btn {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-800 mb-4">Optical Character Recognition (OCR) of the Beatrice Moxon Diary</h1>
+        </header>
+
+        <!-- The Approach Section -->
+        <section id="approach" class="mb-20">
+            <!-- <h2 class="text-3xl font-bold text-center mb-10">Optical Character Recognition (OCR) of the Beatrice Moxon Diary</h2> -->
+            <div class="max-w-4xl mx-auto text-center text-stone-700 mb-12">
+                <p class="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto">An interactive report on the OCR development approach for the handwritten 1885 diary of Beatrice Moxon.</p>
+            </div>
+            <div class="max-w-4xl mx-auto text-center text-stone-700 mb-12">
+                <p>This project required a hybrid methodology to achieve high accuracy. We combined a pre-trained visual model for initial text recognition with a fine-tuned Large Language Model (LLM) to refine the output, correct errors, and apply specific diplomatic transcription rules. This section breaks down our four-step process.</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-6 mb-8">
+                <div id="step-1" class="step-card flex-1 p-6 border-2 border-transparent rounded-lg cursor-pointer bg-white shadow-md hover:shadow-lg transition-shadow" onclick="selectStep(1)">
+                    <h3 class="font-bold text-lg text-amber-700 mb-2">1. Image Preprocessing</h3>
+                    <p class="text-sm text-stone-600">Enhancing scanned diary pages through noise reduction and contrast adjustment for optimal clarity.</p>
+                </div>
+                <div id="step-2" class="step-card flex-1 p-6 border-2 border-transparent rounded-lg cursor-pointer bg-white shadow-md hover:shadow-lg transition-shadow" onclick="selectStep(2)">
+                    <h3 class="font-bold text-lg text-amber-700 mb-2">2. Initial OCR Processing</h3>
+                    <p class="text-sm text-stone-600">Using a pre-trained model to generate a preliminary text transcription from the images.</p>
+                </div>
+                <div id="step-3" class="step-card flex-1 p-6 border-2 border-transparent rounded-lg cursor-pointer bg-white shadow-md hover:shadow-lg transition-shadow" onclick="selectStep(3)">
+                    <h3 class="font-bold text-lg text-amber-700 mb-2">3. LLM Fine-Tuning</h3>
+                    <p class="text-sm text-stone-600">Refining the raw text with a Large Language Model trained on historical context and specific handwriting.</p>
+                </div>
+                 <div id="step-4" class="step-card flex-1 p-6 border-2 border-transparent rounded-lg cursor-pointer bg-white shadow-md hover:shadow-lg transition-shadow" onclick="selectStep(4)">
+                    <h3 class="font-bold text-lg text-amber-700 mb-2">4. Applying Rules</h3>
+                    <p class="text-sm text-stone-600">Enforcing diplomatic transcription rules to maintain the integrity of the original manuscript.</p>
+                </div>
+            </div>
+            <div id="step-details" class="p-6 bg-amber-50 rounded-lg min-h-[100px] transition-all">
+                <!-- Details will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Performance Evaluation</h2>
+            <p class="text-center text-stone-700 max-w-3xl mx-auto mb-10">The core of our evaluation was comparing the accuracy of the OCR system before and after fine-tuning the Large Language Model. We measured both Character Error Rate (CER) and Word Error Rate (WER), where lower percentages indicate higher accuracy. Use the buttons below to explore the results for different diary pages.</p>
+            
+            <div class="flex justify-center items-center gap-4 mb-8">
+                 <button id="btn-0005" class="nav-btn px-6 py-2 rounded-full bg-white text-stone-700 font-medium shadow-sm hover:bg-amber-100" onclick="updateChart('0005')">Diary Page 0005</button>
+                 <button id="btn-0006" class="nav-btn px-6 py-2 rounded-full bg-white text-stone-700 font-medium shadow-sm hover:bg-amber-100" onclick="updateChart('0006')">Diary Page 0006</button>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="errorRateChart"></canvas>
+            </div>
+        </section>
+        
+        <!-- Transcription Rules Section -->
+        <section id="rules" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10">Diplomatic Transcription Rules</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg mb-2">Struck-through Words</h3>
+                    <p class="text-stone-600">Kept in the text, enclosed within a `&lt;del&gt;` tag to preserve original edits.</p>
+                    <p class="mt-2 p-2 bg-stone-100 rounded text-sm text-center font-mono">&lt;del&gt;word&lt;/del&gt;</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg mb-2">Underlined Words</h3>
+                    <p class="text-stone-600">Maintained and enclosed within a `&lt;u&gt;` tag to indicate emphasis.</p>
+                    <p class="mt-2 p-2 bg-stone-100 rounded text-sm text-center font-mono">&lt;u&gt;word&lt;/u&gt;</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg mb-2">Doubtful Letters</h3>
+                    <p class="text-stone-600">A single questionable letter is marked with a bracketed question mark.</p>
+                    <p class="mt-2 p-2 bg-stone-100 rounded text-sm text-center font-mono">mi[?]alie</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md col-span-1 md:col-span-2 lg:col-span-3">
+                    <h3 class="font-bold text-lg mb-2">Illegible Text</h3>
+                    <p class="text-stone-600">If a single word or a longer span of text is entirely unreadable, it is replaced with `[UNSURE]` to indicate the uncertainty while preserving the layout.</p>
+                    <p class="mt-2 p-2 bg-stone-100 rounded text-sm text-center font-mono">[UNSURE]</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Future Development Section -->
+        <section id="future">
+            <h2 class="text-3xl font-bold text-center mb-10">Limitations & Future Directions</h2>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="text-center">
+                    <div class="mx-auto bg-amber-100 rounded-full h-16 w-16 flex items-center justify-center mb-4">
+                       <span class="text-3xl">🖼️</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Improve Resilience</h3>
+                    <p class="text-stone-600">Enhance image preprocessing to better handle degraded or damaged manuscripts, reducing dependency on high-quality scans.</p>
+                </div>
+                <div class="text-center">
+                    <div class="mx-auto bg-amber-100 rounded-full h-16 w-16 flex items-center justify-center mb-4">
+                        <span class="text-3xl">⚙️</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Optimize & Scale</h3>
+                    <p class="text-stone-600">Explore optimization strategies to reduce the computational resources required for LLM fine-tuning, enabling larger-scale processing.</p>
+                </div>
+                <div class="text-center">
+                    <div class="mx-auto bg-amber-100 rounded-full h-16 w-16 flex items-center justify-center mb-4">
+                        <span class="text-3xl">🌐</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Expand Capabilities</h3>
+                    <p class="text-stone-600">Broaden the system's training to handle multilingual documents, different historical periods, and a wider variety of handwriting styles.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <script>
+        const resultsData = {
+            '0005': {
+                cer: [28.43, 18.95],
+                wer: [15.57, 13.10]
+            },
+            '0006': {
+                cer: [16.68, 9.39],
+                wer: [14.03, 18.05]
+            }
+        };
+
+        const stepDetailsContent = {
+            1: "<strong>Image Preprocessing:</strong> The initial step involves preparing the scanned images of the diary pages to improve readability for the OCR model. This includes automated rotation, noise reduction to remove spots or discoloration, contrast adjustment to make the ink stand out from the paper, and binarization to create a clear, high-contrast black-and-white image.",
+            2: "<strong>Initial OCR Processing:</strong> We use a pre-trained visual model (TrOCR) to perform a first pass on the cleaned images. This step generates a baseline text output that captures the basic structure and content of the handwriting, serving as a raw foundation for refinement.",
+            3: "<strong>LLM Fine-Tuning:</strong> The preliminary text is then processed by a powerful Large Language Model (Gemini). This model is fine-tuned using the first three pages of the diary, allowing it to learn the specific nuances of Beatrice Moxon's handwriting, vocabulary, and common phrases, which dramatically improves contextual understanding and accuracy.",
+            4: "<strong>Applying Transcription Rules:</strong> In the final step, the system programmatically applies the specific diplomatic transcription rules defined by the project. This ensures that the output not only is an accurate transcription but also maintains the scholarly integrity of the original manuscript, noting original edits, uncertainties, and emphasis."
+        };
+
+        let errorRateChart;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('errorRateChart').getContext('2d');
+            errorRateChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Character Error Rate (CER)', 'Word Error Rate (WER)'],
+                    datasets: [{
+                        label: 'Without Fine-Tuning',
+                        data: [],
+                        backgroundColor: '#94A3B8', // slate-400
+                        borderColor: '#64748B', // slate-500
+                        borderWidth: 1
+                    }, {
+                        label: 'With Fine-Tuning',
+                        data: [],
+                        backgroundColor: '#D97706', // amber-600
+                        borderColor: '#B45309', // amber-700
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Error Rate (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'OCR Performance Comparison',
+                            font: {
+                                size: 18,
+                                family: "'Merriweather', serif"
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            updateChart('0005');
+            selectStep(1);
+        });
+
+        function updateChart(documentId) {
+            const data = resultsData[documentId];
+            errorRateChart.data.datasets[0].data = [data.cer[0], data.wer[0]];
+            errorRateChart.data.datasets[1].data = [data.cer[1], data.wer[1]];
+            errorRateChart.options.plugins.title.text = `OCR Performance for Diary Page ${documentId}`;
+            errorRateChart.update();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${documentId}`).classList.add('active');
+        }
+
+        function selectStep(stepNumber) {
+            document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+            const detailsContainer = document.getElementById('step-details');
+            detailsContainer.innerHTML = stepDetailsContent[stepNumber];
+        }
+
+    </script>
+</body>
+</html>
