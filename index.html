@@ -83,9 +83,9 @@
                     <div class="max-w-7xl mx-auto">
                         <div class="mb-16">
                             <div class="flex justify-center items-center">
-                                <object data="Architecture.svg" type="image/svg+xml" class="w-full max-w-5x2" aria-label="System Architecture Diagram">
+                                <object data="src/Architecture.svg" type="image/svg+xml" class="w-full max-w-5x2" aria-label="System Architecture Diagram">
                                     <!-- Fallback for browsers that don't support object tag -->
-                                    <img src="Architecture.svg" alt="System Architecture Diagram" class="w-full max-w-5x2">
+                                    <img src="src/Architecture.svg" alt="System Architecture Diagram" class="w-full max-w-5x2">
                                 </object>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
         </section>
         
         <!-- Future Development Section -->
-        <section id="future">
+        <section id="future" class="mb-20">
             <h2 class="text-3xl font-bold text-left mb-10">Limitations & Future Directions</h2>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 <div class="text-center">
@@ -215,15 +215,32 @@
         </section>
 
         <!-- Contact Information -->
-        <section id="contact" class="mt-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-left mb-10">Contact Information</h2>
-            <p class="text-stone-700 max-w-3xl mx-auto">
-                For further information or collaboration inquiries, please reach out via email.
-            </p>
-            <footer class="mt-20 text-left text-stone-600 text-sm">
-                <p>©️ Developed by Khondaker Tasrif Noor <br>
-                <a href="mailto:k.noor@research.deakin.edu.au">📧 k.noor@research.deakin.edu.au</a>
-            </p>
+        <section id="contact" class="mt-20 mb-10">
+            <h2 class="text-3xl font-bold text-left mb-10">Contact & Project Repository</h2>
+            <div class="max-w-5x2 mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <div class="text-left">
+                    <p class="text-stone-700 text-lg mb-4">
+                        For further information or collaboration inquiries, please reach out via email.
+                    </p>
+                    <br>
+                    <div class="text-stone-600">
+                        <p class="font-bold text-amber-900">Deborah Lee-Talbot</p>
+                        <a href="mailto:deborah.leetalbot@deakin.edu.au" class="hover:text-amber-700 transition-colors">📧 deborah.leetalbot@deakin.edu.au</a>
+                    </div>
+                    <br>
+                    <div class="text-stone-600">
+                        <p class="font-bold text-amber-900">Khondaker Tasrif Noor</p>
+                        <a href="mailto:k.noor@research.deakin.edu.au" class="hover:text-amber-700 transition-colors">📧 k.noor@research.deakin.edu.au</a>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center md:items-end text-center md:text-right">
+                    
+                    <img src="src/qr-code.svg" alt="QR Code for GitHub Repository" class="w-64 h-64 rounded-lg shadow-md border-4 border-white">
+                    <p class="text-sm text-stone-600 mt-2 font-medium">Scan for the GitHub Repository</p>
+                </div>
+            </div>
+            <footer class="mt-16 text-left text-stone-500 text-sm">
+                <p>© 2025 Deborah Lee-Talbot & Khondaker Tasrif Noor. All rights reserved.</p>
             </footer>
         </section>
     </main>
