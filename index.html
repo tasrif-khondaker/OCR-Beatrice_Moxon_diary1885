@@ -6,6 +6,9 @@
     <title>HAE Project: OCR for the Beatrice Moxon Diary</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMeaCssLdsfunKM2SRGBGhpXupKstOwedVYexDdenObwyGfn/." crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -46,6 +49,9 @@
         }
         .nav-btn {
             transition: all 0.2s ease-in-out;
+        }
+        .katex-display {
+            margin: 0;
         }
     </style>
 </head>
@@ -114,7 +120,35 @@
         <section id="results" class="mb-20">
             <h2 class="text-3xl font-bold text-left mb-4">Performance Evaluation</h2>
             <p class="text-center text-stone-700 max-w-5x2 mx-auto mb-10">The core of our evaluation was comparing the accuracy of the OCR system before and after fine-tuning the Large Language Model. We measured both Character Error Rate (CER) and Word Error Rate (WER), where lower percentages indicate higher accuracy. Use the buttons below to explore the results for different diary pages.</p>
-            
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg text-amber-800 mb-2">Character Error Rate (CER)</h3>
+                        <p class="text-stone-600 text-sm mb-3">Measures the percentage of single characters incorrectly transcribed by the OCR system. It is a granular measure of accuracy.</p>
+                    </div>
+                    <div class="text-lg p-2 bg-stone-100 rounded">
+                        <span>$CER = \frac{E_{\text{character}}}{N} \times 100\%$</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg text-amber-800 mb-2">Word Error Rate (WER)</h3>
+                        <p class="text-stone-600 text-sm mb-3">Measures the percentage of words incorrectly transcribed. This metric often correlates more closely with human-perceived readability.</p>
+                    </div>
+                    <div class="text-lg p-2 bg-stone-100 rounded">
+                        <span>$WER = \frac{E_{\text{word}}}{N} \times 100\%$</span>
+                    </div>
+                </div>
+                <div class="md:col-span-2 text-stone-600 text-sm mt-2 text-left bg-white p-4 rounded-lg border border-stone-200">
+                    <p class="font-medium mb-2">Where,</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><span>$E_{\text{character}}$</span> is the number of character errors (insertions, deletions, substitutions).</li>
+                        <li><span>$E_{\text{word}}$</span> is the number of word errors (insertions, deletions, substitutions).</li>
+                        <li><strong>N</strong> is the total number of characters or words in the ground truth text.</li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="flex justify-center items-center gap-4 mb-8">
                  <button id="btn-0005" class="nav-btn px-6 py-2 rounded-full bg-white text-stone-700 font-medium shadow-sm hover:bg-amber-100" onclick="updateChart('0005')">Diary Page 0005</button>
                  <button id="btn-0006" class="nav-btn px-6 py-2 rounded-full bg-white text-stone-700 font-medium shadow-sm hover:bg-amber-100" onclick="updateChart('0006')">Diary Page 0006</button>
@@ -180,6 +214,18 @@
             </div>
         </section>
 
+        <!-- Contact Information -->
+        <section id="contact" class="mt-20 mb-10 text-center">
+            <h2 class="text-3xl font-bold text-left mb-10">Contact Information</h2>
+            <p class="text-stone-700 max-w-3xl mx-auto">
+                For further information or collaboration inquiries, please reach out via email.
+            </p>
+            <footer class="mt-20 text-left text-stone-600 text-sm">
+                <p>©️ Developed by Khondaker Tasrif Noor <br>
+                <a href="mailto:k.noor@research.deakin.edu.au">📧 k.noor@research.deakin.edu.au</a>
+            </p>
+            </footer>
+        </section>
     </main>
     
     <script>
@@ -204,6 +250,13 @@
         let errorRateChart;
 
         document.addEventListener('DOMContentLoaded', () => {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+
             const ctx = document.getElementById('errorRateChart').getContext('2d');
             errorRateChart = new Chart(ctx, {
                 type: 'bar',
