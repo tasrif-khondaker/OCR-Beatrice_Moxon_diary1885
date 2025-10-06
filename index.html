@@ -72,44 +72,19 @@
             <div class="mb-16">
                 <h2 class="text-2xl font-bold text-left text-stone-700 mb-8">System Architecture</h2>
 
-                <!-- Desktop Diagram with SVG Skip Connection -->
-                <div class="relative pt-8 pb-16 hidden md:block">
-                    <!-- SVG container for the curved arrow -->
-                    <svg class="absolute top-0 left-0 w-full h-full overflow-visible pointer-events-none" viewBox="0 0 1050 180">
-                        <defs>
-                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="2" refY="3.5" orient="auto" class="text-amber-500">
-                                <polygon points="0 0, 8 3.5, 0 7" fill="currentColor" />
-                            </marker>
-                        </defs>
-                        <!-- Corrected curved path based on the user's image -->
-                        <path d="M 140 96 C 140 175, 716 175, 716 96" stroke-width="2" fill="none" class="stroke-current text-amber-500" marker-end="url(#arrowhead)"></path>
-                    </svg>
-
-                    <!-- The main diagram flow -->
-                    <div class="flex flex-row items-center justify-center gap-4 text-center">
-                        <div class="p-4 bg-white rounded-lg shadow-md h-24 flex items-center justify-center w-40 z-10">
-                            <p class="font-semibold">Diary Page Image</p>
-                        </div>
-                        <div class="text-2xl font-sans text-amber-700 mx-2">→</div>
-                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg shadow-md h-24 flex flex-col items-center justify-center w-40 z-10">
-                            <p class="font-bold text-amber-800">Stage 1: TrOCR</p>
-                            <p class="text-sm text-stone-600">Initial Transcription</p>
-                        </div>
-                        <div class="text-2xl font-sans text-amber-700 mx-2">→</div>
-                        <div class="p-4 bg-white rounded-lg shadow-md h-24 flex items-center justify-center w-40 z-10">
-                            <p class="font-semibold">Raw Text Output</p>
-                        </div>
-                        <div class="text-2xl font-sans text-amber-700 mx-2">→</div>
-                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg shadow-md h-24 flex flex-col items-center justify-center w-40 z-10">
-                            <p class="font-bold text-amber-800">Stage 2: LLM</p>
-                            <p class="text-sm text-stone-600">Refinement & Correction</p>
-                        </div>
-                        <div class="text-2xl font-sans text-amber-700 mx-2">→</div>
-                        <div class="p-4 bg-green-100 border border-green-200 rounded-lg shadow-md h-24 flex items-center justify-center w-40 z-10">
-                            <p class="font-bold text-green-800">Final Transcript</p>
+                <!-- Architecture Diagram -->
+                <body class="bg-stone-50 p-8">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="mb-16">
+                            <div class="flex justify-center items-center">
+                                <object data="Architecture.svg" type="image/svg+xml" class="w-full max-w-5x2" aria-label="System Architecture Diagram">
+                                    <!-- Fallback for browsers that don't support object tag -->
+                                    <img src="Architecture.svg" alt="System Architecture Diagram" class="w-full max-w-5x2">
+                                </object>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </body>
                 
                 <!-- Mobile-friendly vertical diagram -->
                 <div class="md:hidden">
@@ -329,3 +304,4 @@
     </script>
 </body>
 </html>
+
